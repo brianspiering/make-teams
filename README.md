@@ -7,7 +7,7 @@ Running
 
 Reads in `students.txt`
 
-Make a series of Markdown files that look like this:
+Saves a series of Markdown files that look like this:
 
 | Driver | Navigator1 | Navigator2| 
 |--------|-----------|------------| 
