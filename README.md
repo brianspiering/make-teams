@@ -1,8 +1,13 @@
 Make pairs and teams for quizzs and "pair" programming labs
 =====
 
+Running
 
-Should look like this:
+`$ python make_teams.py`
+
+Reads in `students.txt`
+
+Make a series of Markdown files that look like this:
 
 | Driver | Navigator1 | Navigator2| 
 |--------|-----------|------------| 
