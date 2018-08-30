@@ -6,11 +6,12 @@ import os
 import random
 
 
-def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams'):
+def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams', pair_labels: bool=True):
     "Given a list of students, make programming teams for each session, each day for each week. Save the resulting markdown table."
 
     n_students = len(students)
     random.seed()
+
     
     if not os.path.exists(path):
         os.makedirs(path)
@@ -30,11 +31,17 @@ def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams'):
 
                     for i in range_current:
 
+
                         if (line_break_counter % 2 == 0):
                             out_file.write(f"|     | Team {team_counter} |     |     |\n")
                             out_file.write("|:----:|:---:|:---:|:---:| \n")
 
-                        out_file.write(f'| Pair {pair_counter} |{students[i - 1]}|{students[i]}|\n')
+                        if pair_labels:
+                            pair_string = f'Pair {pair_counter}'
+                        else:
+                            pair_string = ''
+
+                        out_file.write(f'| {pair_string} |{students[i - 1]}|{students[i]}|\n')
                         
                         pair_counter += 1
                         
@@ -49,19 +56,25 @@ def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams'):
                     
                     for i in range_current:
                         
+
                         if (line_break_counter % 2 == 0):
                             out_file.write(f"|     | Team {team_counter} |     |     |\n")
                             out_file.write("|:----:|:---:|:---:|:---:| \n")
                         
                         loop_num += 1
 
+                        if pair_labels:
+                            pair_string = f'Pair {pair_counter}'
+                        else:
+                            pair_string = ''
+
                         if loop_num != total_loops:
-                            out_file.write(f'| Pair {pair_counter} | {students[i - 1]} | {students[i]} | |\n')
+                            out_file.write(f'| {pair_string} | {students[i - 1]} | {students[i]} | |\n')
                            
                         else:
 
                             odd_person_out = students[-1:n_students]
-                            out_file.write(f'| Pair {pair_counter} | {students[i - 1]} | {students[i]} | {odd_person_out[0]} |\n')
+                            out_file.write(f'| {pair_string} | {students[i - 1]} | {students[i]} | {odd_person_out[0]} |\n')
                         
                         pair_counter += 1
                         line_break_counter += 1 # Add line break for 4-5 person  teams
@@ -77,4 +90,4 @@ if __name__ == '__main__':
     with open('students.txt') as f:
         students = f.read().splitlines()
 
-    make_teams(students=students)
+    make_teams(students, pair_labels=False)
