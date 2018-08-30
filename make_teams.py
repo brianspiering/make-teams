@@ -3,6 +3,7 @@
 "Make programming teams for each day for each week. Format as a markdown table, then save to file."
 
 import os
+import collections
 import random
 
 
@@ -89,5 +90,7 @@ if __name__ == '__main__':
     
     with open('students.txt') as f:
         students = f.read().splitlines()
+
+    assert len(students) == len(set(students)), f"Duplicate students names: {[item for item, count in collections.Counter(students).items() if count > 1]})"
 
     make_teams(students, pair_labels=False)
