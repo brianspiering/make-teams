@@ -13,7 +13,6 @@ def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams', pai
     n_students = len(students)
     random.seed()
 
-    
     if not os.path.exists(path):
         os.makedirs(path)
     
@@ -33,19 +32,20 @@ def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams', pai
                     for i in range_current:
 
 
-                        if (line_break_counter % 2 == 0):
-                            out_file.write(f"|     | Team {team_counter} |     |     |\n")
-                            out_file.write("|:----:|:---:|:---:|:---:| \n")
+                        if (line_break_counter % 2 == 0) and pair_labels:
+                            out_file.write(f"|     | Team {team_counter}|     |\n")
+                            out_file.write("|:----:|:---:|:---:| \n")
+                        elif (line_break_counter % 2 == 0) and not pair_labels:
+                            out_file.write(f"|Team {team_counter}|     |\n")
+                            out_file.write("|:---:|:---:| \n")
 
                         if pair_labels:
                             pair_string = f'Pair {pair_counter}'
+                            out_file.write(f'| {pair_string} |{students[i - 1]}|{students[i]}|\n')
+                            pair_counter += 1
                         else:
-                            pair_string = ''
+                            out_file.write(f'|{students[i - 1]}|{students[i]}|\n')
 
-                        out_file.write(f'| {pair_string} |{students[i - 1]}|{students[i]}|\n')
-                        
-                        pair_counter += 1
-                        
                         line_break_counter += 1 # Add line break for 4-5 person teams
 
                         if (line_break_counter % 2 == 0) and (i != range_current[-1]): 
@@ -93,4 +93,7 @@ if __name__ == '__main__':
 
     assert len(students) == len(set(students)), f"Duplicate students names: {[item for item, count in collections.Counter(students).items() if count > 1]})"
 
-    make_teams(students, pair_labels=False)
+    make_teams(students, 
+               weeks=1,
+               days=1,
+               pair_labels=False)
