@@ -20,9 +20,9 @@ def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams', pai
         for day in range(1, days+1):
             
             random.shuffle(students)
-            file_name = "teams_"+str(week)+"_"+str(day)+".md"
+            filename = "teams_"+str(week)+"_"+str(day)+".md"
             
-            with open(path+'/'+file_name, 'w') as out_file:
+            with open(path+'/'+filename, 'w') as out_file:
                 
                 line_break_counter, team_counter, pair_counter = 0, 0, 0
                 range_current = range(1, n_students, 2)
@@ -86,6 +86,39 @@ def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams', pai
 
                 out_file.write("  \n")
 
+def horizontal_layout(filename: str, path: str='teams', n_cols: int=5):
+    "Convert vertical list to tiled"
+    
+    with open(path+'/'+filename) as f:
+        orginal = [line.strip() for line in f.readlines()]
+
+    # Slice into component parts
+    team_nums = orginal[::5]
+    line_breaks = orginal[1::5]
+    people_row_1 = orginal[2::5]
+    people_row_2 = orginal[3::5]
+
+    row_counter = 0
+
+    with open(path+'/'+filename, 'w') as f:
+    
+        for table_row in range(1, n_cols+1):
+            s = slice(row_counter, n_cols+row_counter)
+            row_1 = ' '.join(team_nums[s])
+            row_2 = ':---:'.join(line_breaks[s])
+            row_3 = ' '.join(people_row_1[s])
+            row_4 = ' '.join(people_row_2[s])
+
+            f.write(row_1 + '\n')
+            f.write(row_2 + '\n')
+            f.write(row_3 + '\n')
+            f.write(row_4 + '\n')
+            f.write('\n')
+            
+            row_counter += n_cols
+
+
+
 if __name__ == '__main__':
     
     with open('students.txt') as f:
@@ -97,3 +130,5 @@ if __name__ == '__main__':
                weeks=1,
                days=1,
                pair_labels=False)
+
+    horizontal_layout(filename='teams_1_1.md')
