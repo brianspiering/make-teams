@@ -1,13 +1,13 @@
 #!/usr/bin/env python
 # coding: utf-8
-"Make programming teams for each day for each week. Format as a markdown table, then save to file."
+"Make programming teams for each day for each week. Format as a markdown table. Then save to files."
 
 import os
 import collections
 import random
+from typing import List
 
-
-def make_teams(students: list, weeks: int=6, days: int=2, path: str='teams', pair_labels: bool=True):
+def make_teams(students: List, weeks: int=6, days: int=2, path: str='teams', pair_labels: bool=True):
     "Given a list of students, make programming teams for each session, each day for each week. Save the resulting markdown table."
 
     n_students = len(students)
@@ -124,6 +124,7 @@ if __name__ == '__main__':
     with open('students.txt') as f:
         students = f.read().splitlines()
 
+    # Make sure there are no extact duplicate students    
     assert len(students) == len(set(students)), f"Duplicate students names: {[item for item, count in collections.Counter(students).items() if count > 1]})"
 
     make_teams(students, 
